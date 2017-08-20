@@ -1,0 +1,11 @@
+server:
+  port: 8080
+  context-path: /badminton
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: Zxy@19860122
+    url: jdbc:mysql://120.77.86.12:3306/badminton_bar?characterEncoding=utf-8&useSSL=false
+  jpa:
+    show-sql: true
