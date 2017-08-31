@@ -9,3 +9,17 @@ spring:
     url: jdbc:mysql://120.77.86.12:3306/badminton_bar?characterEncoding=utf-8&useSSL=false
   jpa:
     show-sql: true
+  redis:
+    host: 120.77.86.12
+    port: 6379
+    password: Zxy@19860122
+wechat:
+  mp:
+    appId: wx557951c1f38f290c
+    secret: dcc02b94c5a10de4539854d58c333134
+    token: smallow
+    aesKey: L0idLHufUt3ryYbR5mv21KhnCL8lIxd1R40kKl3WdCy
+projectUrl:
+  wechatMpAuthorize: http://smallow.top
+  #wechatOpenAuthorize: http://smallow.top
+  badminton: http://smallow.top
