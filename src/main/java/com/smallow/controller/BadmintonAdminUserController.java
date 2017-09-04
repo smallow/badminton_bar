@@ -1,16 +1,19 @@
 package com.smallow.controller;
 
 import com.smallow.constant.RedisConstant;
-import com.smallow.entity.BadmintonGroup;
+import com.smallow.entity.Group;
+import com.smallow.enums.BadmintonGroupCheckEnum;
+import com.smallow.enums.GroupStatusEnum;
 import com.smallow.enums.ResultEnum;
 import com.smallow.exception.BadmintonException;
-import com.smallow.service.BadmintonGroupService;
+import com.smallow.service.GroupService;
 import com.smallow.service.WxMpQrcodeService2;
 import com.smallow.utils.KeyUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -23,7 +26,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +45,7 @@ public class BadmintonAdminUserController {
     @Autowired
     private WxMpService wxMpService;
     @Autowired
-    private BadmintonGroupService groupService;
+    private GroupService groupService;
 
 
     @GetMapping("/login")
@@ -54,8 +56,8 @@ public class BadmintonAdminUserController {
     @PostMapping("/getQrCode")
     @ResponseBody
     public Map<String, String> getQrCode() {
-        Map<String,String> map=new HashMap<>();
-        map.put("qr_code",KeyUtil.genUniqueKey());
+        Map<String, String> map = new HashMap<>();
+        map.put("qr_code", KeyUtil.genUniqueKey());
         return map;
     }
 
@@ -96,7 +98,8 @@ public class BadmintonAdminUserController {
                 return new ModelAndView("common/error");
             }
 
-            List<BadmintonGroup> list = groupService.findGroupInfoByOpenid(openid);
+            //Page page = groupService.findGroupInfoByOpenid(openid);
+            List<Group> list = null;
             if (list == null || list.isEmpty()) {
                 map.put("msg", ResultEnum.ADMIN_EMPTY.getMessage());
                 map.put("url", "/badminton/admin/group/list");

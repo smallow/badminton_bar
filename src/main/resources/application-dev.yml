@@ -23,3 +23,5 @@ projectUrl:
   wechatMpAuthorize: http://smallow.top
   #wechatOpenAuthorize: http://smallow.top
   badminton: http://smallow.top
+mybatis:
+  type-aliases-package: com.smallow.entity

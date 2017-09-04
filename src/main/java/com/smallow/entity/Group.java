@@ -5,28 +5,20 @@ import com.smallow.enums.BadmintonGroupCheckEnum;
 import com.smallow.enums.GroupStatusEnum;
 import com.smallow.utils.EnumUtil;
 import lombok.Data;
-import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.util.Date;
 
 /**
  * Created by wanghuidong on 2017/8/21.
  * 群组信息
  */
-@Entity
 @Data
-@DynamicUpdate
-public class BadmintonGroup {
+public class Group {
 
     /**
      * 类目id.
      */
-    @Id
-    @GeneratedValue
-    private Integer groupId;
+    private String groupId;
 
     /**
      * 群组名称

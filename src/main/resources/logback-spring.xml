@@ -49,6 +49,11 @@
         <appender-ref ref="consoleLog" />
         <appender-ref ref="fileInfoLog" />
         <appender-ref ref="fileErrorLog" />
+
     </root>
 
+
+    <logger name="com.smallow.mapper" level="DEBUG">
+        <appender-ref ref="consoleLog" />
+    </logger>
 </configuration>
