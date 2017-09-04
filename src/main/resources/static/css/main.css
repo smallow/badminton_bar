@@ -1,0 +1,62 @@
+body{
+	background-color: #f8f8f8;
+}
+/*头部修改*/
+#publicHeader .headerContainer{
+	border: none;
+	margin: 0;
+	padding: 15px 0;
+}
+#publicHeader .navLeftLogo{
+	font-size: 30px;
+	color: #2cb7ca;
+}
+#publicHeader .navLeftLogo>span{
+	margin-right: 4px;
+	font-size: 20px;
+}
+
+/*左侧导航*/
+#leftNav .panel .panel-heading{
+	background-color: #2cb7ca;
+	
+}
+#leftNav .panel .panel-heading a{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	text-decoration: none;
+	color: #FFFFFF;
+	font-size: 18px;
+}
+#leftNav .panel .panel-heading a span{
+	margin-right: 6px;
+}
+#leftNav .panel-body{
+	background-color: #FFFFFF;
+	padding: 0;
+	padding: 0 15px;
+}
+#leftNav .panel-body .list-group{
+	margin: 0;
+	
+}
+#leftNav .panel-body .list-group .list-group-item{
+	border: none;
+	font-size: 16px;
+	margin-bottom: 4px;
+}
+#leftNav .panel-body .list-group .list-group-item:hover{
+	background-color: #2CB7CA;
+	color: #FFFFFF;
+}
+#leftNav .panel-body .list-group .list-group-item:first-child{
+	border-radius:0 ;
+}
+#leftNav .panel-body .list-group .list-group-item:last-child{
+	border-radius:0 ;
+}
+#leftNav .panel-body .list-group .list-group-item:focus{
+	background-color: #2CB7CA;
+	color: #FFFFFF;
+}
