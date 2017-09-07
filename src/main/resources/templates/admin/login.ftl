@@ -1,5 +1,6 @@
 <html>
 <#include "../common/header.ftl">
+<link rel="stylesheet" href="/badminton/css/badminton.css">
 <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="/badminton/js/common.js"></script>
@@ -114,7 +115,8 @@
 
 
     function goLogin(scene_str) {
-        httpFormPost("/badminton/admin/adminMain", {scene_str: scene_str});
+        //alert(scene_str);
+        httpFormPost("/badminton/admin/login", {scene_str: scene_str});
     }
 </script>
 

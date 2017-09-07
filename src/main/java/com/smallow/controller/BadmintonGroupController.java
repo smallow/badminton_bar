@@ -29,7 +29,7 @@ public class BadmintonGroupController {
     public ModelAndView list(Integer page, Integer groupStatus, String groupManagerPhone, String groupName) {
         List<Group> list = new ArrayList<>();
 
-        return new ModelAndView("group/list");
+        return new ModelAndView("admin/group/list");
     }
 
 }

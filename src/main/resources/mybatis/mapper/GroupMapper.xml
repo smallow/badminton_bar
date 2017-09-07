@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smallow.mapper.GroupMapper">
+    <resultMap id="BaseResultMap" type="com.smallow.entity.Group">
+        <id column="group_id" property="groupId" jdbcType="BIGINT"/>
+        <result column="group_name" property="groupName" jdbcType="VARCHAR"/>
+        <result column="group_icon" property="groupIcon" jdbcType="VARCHAR"/>
+        <result column="group_memo" property="groupMemo" jdbcType="VARCHAR"/>
+        <result column="group_manager_name" property="groupManagerName" jdbcType="VARCHAR"/>
+        <result column="group_manager_id_number" property="groupManagerIdNumber" jdbcType="VARCHAR"/>
+        <result column="group_manager_phone" property="groupManagerPhone" jdbcType="VARCHAR"/>
+        <result column="group_status" property="groupStatus" jdbcType="TINYINT"/>
+        <result column="openid" property="openid" jdbcType="VARCHAR"/>
+        <result column="group_check" property="groupCheck" jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        group_id, group_name, group_icon,group_memo, group_manager_name,
+        group_manager_id_number,group_manager_phone,group_status,openid,group_check,create_time,update_time
+    </sql>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM badminton_group
+    </select>
+
+    <select id="findOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM badminton_group
+        WHERE group_Id = #{groupId}
+    </select>
+
+    <insert id="insert" parameterType="com.smallow.entity.Group">
+        INSERT INTO
+        badminton_group
+        (group_name,group_icon,group_memo,group_manager_name,group_manager_id_number,group_manager_phone,group_status,openid,group_check)
+        VALUES
+        (#{groupName}, #{groupIcon}, #{groupMemo}, #{groupManagerName}, #{groupManagerIdNumber},
+        #{groupManagerPhone},#{groupStatus},#{openid},#{groupCheck})
+    </insert>
+
+
+    <delete id="deleteByPK" parameterType="java.lang.Integer">
+        DELETE FROM
+        badminton_group
+        WHERE
+        groupId =#{groupId}
+    </delete>
+
+
+    <select id="count"  resultType="long" parameterType="java.util.Map">
+        select count(group_id) from badminton_group
+        <where>
+            <if test="groupName!=null">
+                and group_name= #{groupName}
+            </if>
+            <if test="groupManagerPhone!=null">
+                and group_manager_phone= #{groupManagerPhone}
+            </if>
+            <if test="groupManagerIdNumber!=null">
+                and group_manager_id_number= #{groupManagerIdNumber}
+            </if>
+            <if test="openid!=null">
+                and openid= #{openid}
+            </if>
+            <if test="groupStatus!=null">
+                and group_status= #{groupStatus}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="findList" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM badminton_group
+        <where>
+            <if test="groupName!=null">
+                and group_name= #{groupName}
+            </if>
+            <if test="groupManagerPhone!=null">
+                and group_manager_phone= #{groupManagerPhone}
+            </if>
+            <if test="groupManagerIdNumber!=null">
+                and group_manager_id_number= #{groupManagerIdNumber}
+            </if>
+            <if test="openid!=null">
+                and openid= #{openid}
+            </if>
+            <if test="groupStatus!=null">
+                and group_status= #{groupStatus}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+        limit #{offset},#{pageSize}
+    </select>
+</mapper>

@@ -22,11 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 public class BadmintonAdminUserAuthorizeAspect {
 
 
-    @Autowired
-    private StringRedisTemplate redisTemplate;
-
-
-    @Pointcut("execution(public * com.smallow.controller.Badminton*.*(..))" +
+    @Pointcut("execution(public * com.smallow.controller.*.*(..))" +
             "&& !execution(public * com.smallow.controller.BadmintonAdminUserController.*(..))")
     public void verify() {
     }

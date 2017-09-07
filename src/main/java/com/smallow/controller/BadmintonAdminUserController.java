@@ -14,6 +14,7 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -37,15 +38,15 @@ import java.util.Map;
 @Controller
 @RequestMapping("/admin")
 public class BadmintonAdminUserController {
-
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired
+    private GroupService groupService;
     @Autowired
     private WxMpQrcodeService2 wxMpQrcodeService2;
     @Autowired
     private WxMpService wxMpService;
-    @Autowired
-    private GroupService groupService;
+
 
 
     @GetMapping("/login")
@@ -87,8 +88,8 @@ public class BadmintonAdminUserController {
     }
 
 
-    @PostMapping("/adminMain")
-    public ModelAndView adminMain(@RequestParam("scene_str") String scene_str,
+    @PostMapping("/login")
+    public ModelAndView login(@RequestParam("scene_str") String scene_str,
                                   Map<String, Object> map, HttpServletRequest request) {
         if (!StringUtils.isEmpty(scene_str)) {
             String openid = redisTemplate.opsForValue().get(String.format(RedisConstant.QRCODE_PREFIX, scene_str));
@@ -98,8 +99,11 @@ public class BadmintonAdminUserController {
                 return new ModelAndView("common/error");
             }
 
-            //Page page = groupService.findGroupInfoByOpenid(openid);
-            List<Group> list = null;
+            Map<String,Object> param=new HashMap<>();
+            PageRequest pageRequest=new PageRequest(0,10);
+            param.put("openid",openid);
+            Page page = groupService.findList(param,pageRequest);
+            List<Group> list = page.getContent();
             if (list == null || list.isEmpty()) {
                 map.put("msg", ResultEnum.ADMIN_EMPTY.getMessage());
                 map.put("url", "/badminton/admin/group/list");
@@ -107,10 +111,13 @@ public class BadmintonAdminUserController {
             }
             request.getSession().setAttribute("openid", list.get(0).getOpenid());
             request.getSession().setAttribute("groupList", list);
-            return new ModelAndView("admin/main");
+            return new ModelAndView("redirect:main/adminMain");
         }
         map.put("msg", ResultEnum.LOGIN_ILLEGAL.getMessage());
         map.put("url", "/badminton/admin/group/list");
         return new ModelAndView("common/error");
     }
+
+
+
 }

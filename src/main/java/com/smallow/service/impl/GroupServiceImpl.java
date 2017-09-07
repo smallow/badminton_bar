@@ -6,11 +6,14 @@ import com.smallow.mapper.GroupMapper;
 import com.smallow.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wanghuidong on 2017/8/30.
@@ -23,12 +26,16 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     @Transactional
-    public int save(Group group) {
-        return groupMapper.insertByObject(group);
+    public void save(Group group) {
+        groupMapper.insert(group);
     }
 
     @Override
-    public List<Group> findList(Group group) {
-        return groupMapper.findList(group);
+    public Page<Group> findList(Map<String, Object> param, Pageable pageable) {
+        param.put("offset",pageable.getOffset());
+        param.put("pageSize",pageable.getPageSize());
+        List<Group> list=groupMapper.findList(param);
+        long totalCount=groupMapper.count(param);
+        return new PageImpl<Group>(list,pageable,totalCount);
     }
 }

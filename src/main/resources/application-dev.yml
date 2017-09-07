@@ -25,3 +25,5 @@ projectUrl:
   badminton: http://smallow.top
 mybatis:
   type-aliases-package: com.smallow.entity
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml

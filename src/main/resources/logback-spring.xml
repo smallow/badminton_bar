@@ -53,7 +53,7 @@
     </root>
 
 
-    <logger name="com.smallow.mapper" level="DEBUG">
-        <appender-ref ref="consoleLog" />
-    </logger>
+    <!--<logger name="com.smallow.mapper" level="DEBUG">-->
+        <!--<appender-ref ref="consoleLog" />-->
+    <!--</logger>-->
 </configuration>
