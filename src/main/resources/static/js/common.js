@@ -14,3 +14,12 @@ function httpFormPost(url, args) {
     form.submit();
     document.body.removeChild(form[0]);
 }
+
+function startAjax(msg) {
+    $("#mask").show();
+    $("#maskMsg").html(msg);
+}
+
+function endAjax() {
+    $("#mask").hide();
+}
