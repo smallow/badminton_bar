@@ -63,6 +63,17 @@
                 </tr>
                 </thead>
                 <tbody id="groupBody">
+                    <#list groupPage.getContent() as group>
+                    <tr>
+                        <td>${group.groupName}</td>
+                        <td>${group.groupManagerName}</td>
+                        <td>${group.groupManagerIdNumber}</td>
+                        <td>${group.groupManagerPhone}</td>
+                        <td>${group.getGroupStatusEnum().msg}</td>
+                        <td>${group.createTime}</td>
+                        <td>修改 | 删除</td>
+                    </tr>
+                    </#list>
                 </tbody>
             </table>
         </div>
@@ -74,7 +85,7 @@
 <script>
     var page=1;
     $(function () {
-        query(getQueryParams(),1);
+        //query(getQueryParams(),1);
     });
 
     function go() {
@@ -92,9 +103,10 @@
     }
     function loadData(data) {
         if(data.code==0){
-            $.each(data.data,function (index, item) {
+            console.log(data.data.content);
+            $.each(data.data.content,function (index, item) {
                 console.log(item+":"+index);
-                var tr=$("<tr><td>"+item.groupName+"</td><td>"+item.groupManagerName+"</td><td>"+item.groupManagerIdNumber+"</td><td>"+item.groupManagerPhone+"</td><td>"+item.groupStatus+"</td><td>"+item.createTime+"</td><td>修改 | 删除</td></tr>")
+                var tr=$("<tr><td>"+item.groupName+"</td><td>"+item.groupManagerName+"</td><td>"+item.groupManagerIdNumber+"</td><td>"+item.groupManagerPhone+"</td><td>"+item.getBacmintonGroupCheckEnum().message+"</td><td>"+item.getBacmintonGroupCheckEnum().message+"</td><td>修改 | 删除</td></tr>")
                 $("#groupBody").append(tr);
             });
 

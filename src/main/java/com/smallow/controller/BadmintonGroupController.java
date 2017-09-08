@@ -1,11 +1,13 @@
 package com.smallow.controller;
 
+import com.smallow.VO.GroupVo;
 import com.smallow.VO.ResultVO;
 import com.smallow.entity.Group;
 import com.smallow.service.GroupService;
 import com.smallow.utils.ResultVOUtil;
 import freemarker.template.utility.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,50 +33,20 @@ public class BadmintonGroupController {
     @Autowired
     private GroupService groupService;
 
-
-
     @GetMapping("/list")
-    public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                             @RequestParam(value = "groupStatus", defaultValue = "0") Integer groupStatus,
-                             @RequestParam(value = "groupManagerPhone", defaultValue = "") String groupManagerPhone,
-                             @RequestParam(value = "groupName", defaultValue = "") String groupName,
-                             @RequestParam(value = "groupManagerName", defaultValue = "") String groupManagerName,
-                             Map<String, Object> map
-                             ) {
-        Map<String,Object> param=new HashMap<>();
-        PageRequest pageRequest=new PageRequest(page-1,pageSize);
-        if (!StringUtils.isEmpty(groupStatus)){
-            param.put("groupStatus",groupStatus);
-        }
-        if(!StringUtils.isEmpty(groupManagerPhone)){
-            param.put("groupManagerPhone",groupManagerPhone);
-        }
-        if(!StringUtils.isEmpty(groupName)){
-            param.put("groupName",groupName);
-        }
-        Page<Group> groupPage=groupService.findList(param,pageRequest);
-        map.put("groupPage", groupPage);
-        map.put("currentPage", page);
-        map.put("pageSize", pageSize);
+    public ModelAndView list() {
         return new ModelAndView("admin/group/list");
     }
-    @GetMapping("/list2")
-    @ResponseBody
-    public ResultVO<List<Group>> list(){
-        Map<String,Object> param=new HashMap<>();
-        PageRequest pageRequest=new PageRequest(0,10);
-        Page<Group> groupPage=groupService.findList(param,pageRequest);
-        return ResultVOUtil.success(groupPage.getContent());
-    }
-//    @PostMapping("/list")
-//    @ResponseBody
-//    public ResultVO<Page> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
-//                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-//                                @RequestParam(value = "groupStatus", defaultValue = "0") Integer groupStatus,
-//                                @RequestParam(value = "groupManagerPhone", defaultValue = "") String groupManagerPhone,
-//                                @RequestParam(value = "groupName", defaultValue = "") String groupName,
-//                                @RequestParam(value = "groupManagerName", defaultValue = "") String groupManagerName){
+
+    //    @GetMapping("/list")
+//    public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
+//                             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+//                             @RequestParam(value = "groupStatus", defaultValue = "0") Integer groupStatus,
+//                             @RequestParam(value = "groupManagerPhone", defaultValue = "") String groupManagerPhone,
+//                             @RequestParam(value = "groupName", defaultValue = "") String groupName,
+//                             @RequestParam(value = "groupManagerName", defaultValue = "") String groupManagerName,
+//                             Map<String, Object> map
+//                             ) {
 //        Map<String,Object> param=new HashMap<>();
 //        PageRequest pageRequest=new PageRequest(page-1,pageSize);
 //        if (!StringUtils.isEmpty(groupStatus)){
@@ -87,8 +59,48 @@ public class BadmintonGroupController {
 //            param.put("groupName",groupName);
 //        }
 //        Page<Group> groupPage=groupService.findList(param,pageRequest);
-//        return ResultVOUtil.success(groupPage);
-//
+//        map.put("groupPage", groupPage);
+//        map.put("currentPage", page);
+//        map.put("pageSize", pageSize);
+//        return new ModelAndView("admin/group/list");
 //    }
+    @GetMapping("/list2")
+    @ResponseBody
+    public ResultVO<List<Group>> list2() {
+        Map<String, Object> param = new HashMap<>();
+        PageRequest pageRequest = new PageRequest(0, 10);
+        Page<Group> groupPage = groupService.findList(param, pageRequest);
+        return ResultVOUtil.success(groupPage.getContent());
+    }
+
+    @PostMapping("/list")
+    @ResponseBody
+    public ResultVO<Page> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                               @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                               @RequestParam(value = "groupStatus", defaultValue = "0") Integer groupStatus,
+                               @RequestParam(value = "groupManagerPhone", defaultValue = "") String groupManagerPhone,
+                               @RequestParam(value = "groupName", defaultValue = "") String groupName,
+                               @RequestParam(value = "groupManagerName", defaultValue = "") String groupManagerName) {
+        Map<String, Object> param = new HashMap<>();
+        PageRequest pageRequest = new PageRequest(page - 1, pageSize);
+        if (!StringUtils.isEmpty(groupStatus)) {
+            param.put("groupStatus", groupStatus);
+        }
+        if (!StringUtils.isEmpty(groupManagerPhone)) {
+            param.put("groupManagerPhone", groupManagerPhone);
+        }
+        if (!StringUtils.isEmpty(groupName)) {
+            param.put("groupName", groupName);
+        }
+        Page<Group> groupPage = groupService.findList(param, pageRequest);
+        List<GroupVo> GroupVoList = new ArrayList<>();
+        for(Group group:groupPage.getContent()){
+            GroupVo groupVo = new GroupVo();
+            BeanUtils.copyProperties(group, groupVo);
+            GroupVoList.add(groupVo);
+        }
+        return ResultVOUtil.success(GroupVoList);
+
+    }
 
 }
