@@ -1,5 +1,6 @@
 package com.smallow.controller;
 
+import com.smallow.constant.CookieConstant;
 import com.smallow.constant.RedisConstant;
 import com.smallow.entity.Group;
 import com.smallow.enums.BadmintonGroupCheckEnum;
@@ -8,6 +9,7 @@ import com.smallow.enums.ResultEnum;
 import com.smallow.exception.BadmintonException;
 import com.smallow.service.GroupService;
 import com.smallow.service.WxMpQrcodeService2;
+import com.smallow.utils.CookieUtil;
 import com.smallow.utils.KeyUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -30,6 +32,8 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -90,7 +94,8 @@ public class BadmintonAdminUserController {
 
     @PostMapping("/login")
     public ModelAndView login(@RequestParam("scene_str") String scene_str,
-                                  Map<String, Object> map, HttpServletRequest request) {
+                              Map<String, Object> map, HttpServletRequest request,
+                              HttpServletResponse response) {
         if (!StringUtils.isEmpty(scene_str)) {
             String openid = redisTemplate.opsForValue().get(String.format(RedisConstant.QRCODE_PREFIX, scene_str));
             if (StringUtils.isEmpty(openid)) {
@@ -109,7 +114,16 @@ public class BadmintonAdminUserController {
                 map.put("url", "/badminton/admin/group/list");
                 return new ModelAndView("common/error");
             }
-            request.getSession().setAttribute("openid", list.get(0).getOpenid());
+
+            //2. 设置token至redis
+            String token = UUID.randomUUID().toString();
+            Integer expire = RedisConstant.TOKEN_EXPIRE;
+            redisTemplate.opsForValue().set(String.format(RedisConstant.TOKEN_PREFIX, token), openid, expire, TimeUnit.SECONDS);
+
+            //3. 设置token至cookie
+            CookieUtil.set(response, CookieConstant.TOKEN, token, expire);
+
+            request.getSession().setAttribute("openid", openid);
             request.getSession().setAttribute("groupList", list);
             return new ModelAndView("redirect:main/adminMain");
         }

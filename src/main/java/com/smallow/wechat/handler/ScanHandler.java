@@ -2,6 +2,7 @@ package com.smallow.wechat.handler;
 
 
 import com.smallow.constant.RedisConstant;
+import com.smallow.wechat.builder.TextBuilder;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
@@ -33,6 +34,6 @@ public class ScanHandler extends AbstractHandler {
         Integer expire = RedisConstant.QRCODE_EXPIRE;
         redisTemplate.opsForValue().set(String.format(RedisConstant.QRCODE_PREFIX, sceneStr), openid, expire, TimeUnit.SECONDS);
         logger.info("【扫描设置redis缓存成功】scenStr={},openid={}", sceneStr, openid);
-        return null;
+        return new TextBuilder().build("登录成功", wxMpXmlMessage, wxMpService);
     }
 }

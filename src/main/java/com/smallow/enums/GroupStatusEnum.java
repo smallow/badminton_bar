@@ -9,7 +9,7 @@ import lombok.Getter;
 public enum GroupStatusEnum implements CodeEnum{
 
 
-    APPLY(0,"申请中"),PASSED(1,"已开通");
+    APPLY(0,"申请中"),PASSED(1,"已开通"),CANCEL(2,"已注销"),;
 
     private Integer code;
     private String msg;

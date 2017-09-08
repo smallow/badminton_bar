@@ -13,6 +13,8 @@ spring:
     host: 120.77.86.12
     port: 6379
     password: Zxy@19860122
+  jackson:
+        default-property-inclusion: non_null
 wechat:
   mp:
     appId: wx557951c1f38f290c

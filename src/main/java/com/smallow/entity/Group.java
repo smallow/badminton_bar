@@ -1,11 +1,15 @@
 package com.smallow.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.smallow.enums.BadmintonGroupCheckEnum;
 import com.smallow.enums.GroupStatusEnum;
 import com.smallow.utils.EnumUtil;
+import com.smallow.utils.serializer.Date2LongSerializer;
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -56,9 +60,16 @@ public class Group {
     private Integer groupCheck = BadmintonGroupCheckEnum.NEED.getCode();
 
 
-    private Date createTime;
 
-    private Date updateTime;
+    //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonSerialize(using = Date2LongSerializer.class)
+    private Timestamp createTime;
+
+
+
+    //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonSerialize(using = Date2LongSerializer.class)
+    private Timestamp updateTime;
 
     private Integer groupStatus= GroupStatusEnum.APPLY.getCode();
 
