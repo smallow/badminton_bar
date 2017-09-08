@@ -4,7 +4,7 @@
             <div class="panel-heading">
                 <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-29368" href="#panel-element-670670"><span class="glyphicon glyphicon-th-list"></span>系统管理</a>
             </div>
-            <div id="panel-element-670670" class="panel-collapse collapse">
+            <div id="panel-element-670670" class="panel-collapse collapse in">
                 <div class="panel-body">
                     <div class="list-group">
                         <a href="/badminton/admin/group/list" class="list-group-item">群组管理</a>
