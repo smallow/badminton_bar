@@ -1,14 +1,7 @@
 <!doctype html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="/badminton/css/main.css"/>
-    <title>后台管理</title>
-</head>
-
+<#include "../common/header.ftl">
 <body>
 <div class="container-fluid" id="publicTpl">
     <div class="row clearfix ">
