@@ -1,6 +1,7 @@
 package com.smallow;
 
 import com.smallow.service.WebSocket;
+import com.smallow.service.WebSocket2;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,5 +14,6 @@ public class BadmintonBarApplication {
     public static void main(String[] args) {
         ConfigurableApplicationContext applicationContext=SpringApplication.run(BadmintonBarApplication.class, args);
         WebSocket.setApplicationContext(applicationContext);
+        WebSocket2.setApplicationContext(applicationContext);
     }
 }

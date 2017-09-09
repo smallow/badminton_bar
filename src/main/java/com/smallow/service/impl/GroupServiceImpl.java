@@ -38,4 +38,9 @@ public class GroupServiceImpl implements GroupService {
         long totalCount=groupMapper.count(param);
         return new PageImpl<Group>(list,pageable,totalCount);
     }
+
+    @Override
+    public Group findOne(Integer groupId) {
+        return groupMapper.finOne(groupId);
+    }
 }

@@ -13,6 +13,7 @@ import java.util.Map;
 public interface GroupService {
 
 
+    Group findOne(Integer groupId);
 
     void save(Group group);
     /**

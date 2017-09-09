@@ -34,6 +34,12 @@ public class ScanHandler extends AbstractHandler {
         Integer expire = RedisConstant.QRCODE_EXPIRE;
         redisTemplate.opsForValue().set(String.format(RedisConstant.QRCODE_PREFIX, sceneStr), openid, expire, TimeUnit.SECONDS);
         logger.info("【扫描设置redis缓存成功】scenStr={},openid={}", sceneStr, openid);
-        return new TextBuilder().build("登录成功", wxMpXmlMessage, wxMpService);
+        String msg="";
+        if(sceneStr.startsWith("group_reg_")){
+            msg="群组管理员申请确认成功";
+        }else{
+            msg="登录成功";
+        }
+        return new TextBuilder().build(msg, wxMpXmlMessage, wxMpService);
     }
 }
