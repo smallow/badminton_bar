@@ -35,55 +35,67 @@
                         </td>
                     </tr>
                 </table>
-            <table class="table table-bordered table-hover" id="group">
-                <thead>
-                <tr>
-                    <th>
-                        群组名称
-                    </th>
-                    <th>
-                        群管理员名称
-                    </th>
-                    <th>
-                        管理员证件号码
-                    </th>
-                    <th>
-                        管理员手机号
-                    </th>
+                <table class="table table-bordered table-hover" id="group">
+                    <thead>
+                    <tr>
+                        <th>
+                            群组名称
+                        </th>
+                        <th>
+                            群管理员名称
+                        </th>
+                        <th>
+                            管理员证件号码
+                        </th>
+                        <th>
+                            管理员手机号
+                        </th>
 
-                    <th>
-                        群状态
-                    </th>
-                    <th>
-                        创建时间
-                    </th>
-                    <th>
-                        操作
-                    </th>
-                </tr>
-                </thead>
-                <tbody id="groupBody">
-                </tbody>
-            </table>
+                        <th>
+                            群状态
+                        </th>
+                        <th>
+                            创建时间
+                        </th>
+                        <th>
+                            操作
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody id="groupBody">
+                    </tbody>
+                </table>
+                <div class="col-md-12 column">
+                    <a href="/badminton/admin/group/add" data-toggle="modal" data-target="#myModal" class="btn  btn-warning pull-left" style="margin:20px 0;display: inline-block;" >新建群组</a>
+                    <ul class="pagination pull-right" id="groupPagination">
+                    </ul>
+                </div>
         </div>
     </div>
 </div>
 <#include "../../common/mask.ftl"/>
-<script type="text/javascript" src="/badminton/js/common.js"></script>
+<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/badminton/js/common.js"></script>
 <script>
-    var page=1;
     $(function () {
-        query(getQueryParams(),1);
+        query(getQueryParams(),1,10);
+        $("#myModal").on("hidden.bs.modal", function() {
+            $(this).removeData("bs.modal");
+        });
     });
 
     function go() {
-        page=1;
-        query(getQueryParams(),page);
+        query(getQueryParams(),reset(),10);
     }
-    function query(param,page) {
+    function query(param,page,size) {
         param.page=page;
-        param.pageSize=10;
+        param.pageSize=size;
         startAjax("正在加载数据....");
         $.post("/badminton/admin/group/list",param,function (data) {
             endAjax();
@@ -92,14 +104,14 @@
     }
     function loadData(data) {
         if(data.code==0){
-            $.each(data.data,function (index, item) {
-                console.log(item+":"+index);
+            $.each(data.data.content,function (index, item) {
                 var tr=$("<tr><td>"+item.groupName+"</td><td>"+item.groupManagerName+"</td><td>"+item.groupManagerIdNumber+"</td><td>"+item.groupManagerPhone+"</td><td>"+item.groupStatus+"</td><td>"+item.createTime+"</td><td>修改 | 删除</td></tr>")
                 $("#groupBody").append(tr);
             });
-
+            genPagination("groupPagination",data.data.currentPage,data.data.pageSize,data.data.totalPage,data.data.totalElements);
         }
     }
+
     function getQueryParams() {
         var groupName=$("#groupName").val();
         var groupManagerName=$("#groupManagerName").val();
@@ -112,6 +124,16 @@
             groupStatus:groupStatus
         };
         return param;
+    }
+    function reset() {
+        $("#groupBody").html("");
+        return 1;
+    }
+    function pagingImpl(page, size) {
+        query(getQueryParams(),page,size);
+    }
+    function add(){
+
     }
 </script>
 </body>

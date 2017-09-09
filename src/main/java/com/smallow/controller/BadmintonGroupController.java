@@ -2,6 +2,7 @@ package com.smallow.controller;
 
 import com.smallow.VO.GroupVo;
 import com.smallow.VO.ResultVO;
+import com.smallow.converter.Group2GroupVoConverter;
 import com.smallow.entity.Group;
 import com.smallow.service.GroupService;
 import com.smallow.utils.ResultVOUtil;
@@ -36,6 +37,10 @@ public class BadmintonGroupController {
     @GetMapping("/list")
     public ModelAndView list() {
         return new ModelAndView("admin/group/list");
+    }
+    @GetMapping("/add")
+    public ModelAndView add() {
+        return new ModelAndView("admin/group/add");
     }
 
     //    @GetMapping("/list")
@@ -93,13 +98,15 @@ public class BadmintonGroupController {
             param.put("groupName", groupName);
         }
         Page<Group> groupPage = groupService.findList(param, pageRequest);
-        List<GroupVo> GroupVoList = new ArrayList<>();
-        for(Group group:groupPage.getContent()){
-            GroupVo groupVo = new GroupVo();
-            BeanUtils.copyProperties(group, groupVo);
-            GroupVoList.add(groupVo);
-        }
-        return ResultVOUtil.success(GroupVoList);
+        List<GroupVo> groupVoList = new ArrayList<>();
+        groupVoList = Group2GroupVoConverter.convert(groupPage.getContent());
+        Map<String,Object> returnData=new HashMap<>();
+        returnData.put("content",groupVoList);
+        returnData.put("currentPage",page);
+        returnData.put("pageSize",pageSize);
+        returnData.put("totalPage",groupPage.getTotalPages());
+        returnData.put("totalElements",groupPage.getTotalElements());
+        return ResultVOUtil.success(returnData);
 
     }
 
