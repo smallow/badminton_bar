@@ -27,7 +27,12 @@ public class GroupServiceImpl implements GroupService {
     @Override
     @Transactional
     public void save(Group group) {
-        groupMapper.insert(group);
+        if(group.getGroupId()!=null){
+            groupMapper.update(group);
+        }else{
+            groupMapper.insert(group);
+        }
+
     }
 
     @Override
@@ -41,6 +46,6 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group findOne(Integer groupId) {
-        return groupMapper.finOne(groupId);
+        return groupMapper.findOne(groupId);
     }
 }

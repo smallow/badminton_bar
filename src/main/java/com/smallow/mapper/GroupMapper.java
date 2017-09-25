@@ -15,7 +15,7 @@ public interface GroupMapper {
 
     List<Group> findAll();
 
-    Group finOne(Integer groupId);
+    Group findOne(Integer groupId);
 
     void insert(Group group);
 
@@ -25,5 +25,9 @@ public interface GroupMapper {
     List<Group> findList(Map<String,Object> map);
 
     long count(Map<String,Object> map);
+
+    void update(Group group);
+
+
 
 }

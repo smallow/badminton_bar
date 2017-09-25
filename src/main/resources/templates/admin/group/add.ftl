@@ -38,8 +38,7 @@
 
             </div>
         </div>
-        <#if qr_code=="">
-        <#else>
+        <#if qr_code??>
             <div class="form-group">
                 <label for="site_num" class="col-sm-4 control-label">申请人扫码确认</label>
                 <div class="col-sm-8">
@@ -47,6 +46,8 @@
                     <span id="scanResultMsg" style="color: #00CD00;"></span>
                 </div>
             </div>
+        <#else>
+
         </#if>
         <input type="hidden" name="groupId" id="group_id" value=""/>
         <input type="hidden" name="openid" id="openid" value=""/>
@@ -60,11 +61,12 @@
     var webSocket=null;
     var scanFlag=null;
     $(function () {
-        var group="${(group)!''}";
+        var group='${group!''}';
         if(group!="" && group!=null){
-            display(group);
+            //alert(group);
+            display(JSON.parse(group));
         }
-        var qr_code="${qr_code!''}";
+        var qr_code="${(qr_code)!''}";
         if(qr_code!=""){
             createWebSocket();
             sendMsg("group_reg_"+qr_code);
@@ -80,6 +82,14 @@
         $("#group_manager_name").val(group.groupManagerName);
         $("#group_manager_phone").val(group.groupManagerPhone);
         $("#group_manager_id_number").val(group.groupManagerIdNumber);
+
+        $("#group_name").val(group.groupName);
+        $.each($("input[name=groupCheck]"),function (index, obj) {
+           if(group.groupCheck==$(this).val()){
+               //alert($(this).val());
+               $(this).attr("checked","checked");
+           }
+        });
     }
     function save() {
         $("#add_group_form").submit();

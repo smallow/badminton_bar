@@ -105,7 +105,7 @@
     function loadData(data) {
         if(data.code==0){
             $.each(data.data.content,function (index, item) {
-                var tr=$("<tr><td>"+item.groupName+"</td><td>"+item.groupManagerName+"</td><td>"+item.groupManagerIdNumber+"</td><td>"+item.groupManagerPhone+"</td><td>"+item.groupStatus+"</td><td>"+item.createTime+"</td><td>修改 | 删除</td></tr>")
+                var tr=$("<tr><td>"+item.groupName+"</td><td>"+item.groupManagerName+"</td><td>"+item.groupManagerIdNumber+"</td><td>"+item.groupManagerPhone+"</td><td>"+item.groupStatus+"</td><td>"+item.createTime+"</td><td> <a href='javascript:void(0);' onclick=\"modify('"+item.groupId+"')\">修改</a> | <a href='javascript:void(0);' onclick=\"del('"+item.groupId+"')\">删除</a></td></tr>")
                 $("#groupBody").append(tr);
             });
             genPagination("groupPagination",data.data.currentPage,data.data.pageSize,data.data.totalPage,data.data.totalElements);
@@ -132,7 +132,14 @@
     function pagingImpl(page, size) {
         query(getQueryParams(),page,size);
     }
-    function add(){
+
+    function modify(groupId) {
+        $("#myModal").modal({
+            remote: "/badminton/admin/group/add?groupId="+groupId
+        });
+    }
+
+    function del(groupId) {
 
     }
 </script>

@@ -9,6 +9,7 @@ import com.smallow.form.GroupForm;
 import com.smallow.service.GroupService;
 import com.smallow.utils.KeyUtil;
 import com.smallow.utils.ResultVOUtil;
+import com.smallow.wechat.utils.JsonUtils;
 import freemarker.template.utility.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -48,7 +49,7 @@ public class BadmintonGroupController {
                             Map<String, Object> map) {
         if(groupId!=null){
             Group group=groupService.findOne(groupId);
-            map.put("group",group);
+            map.put("group", JsonUtils.toJson(group));
         }else{
             map.put("qr_code", KeyUtil.genUniqueKey());
         }

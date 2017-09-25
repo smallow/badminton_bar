@@ -43,6 +43,24 @@
         #{groupManagerPhone},#{groupStatus},#{openid},#{groupCheck})
     </insert>
 
+    <update id="update" parameterType="com.smallow.entity.Group" >
+        UPDATE
+        badminton_group
+        SET
+        <if test="groupName!=null">group_name=#{groupName},</if>
+        <if test="groupIcon!=null">group_icon=#{groupIcon},</if>
+        <if test="groupMemo!=null">group_memo=#{groupMemo},</if>
+        <if test="groupManagerName!=null">group_manager_name=#{groupManagerName},</if>
+        <if test="groupManagerIdNumber!=null">group_manager_id_number=#{groupManagerIdNumber},</if>
+        <if test="groupManagerPhone!=null">group_manager_phone=#{groupManagerPhone},</if>
+        <if test="groupCheck!=null">group_check=#{groupCheck},</if>
+        <if test="groupStatus!=null">group_status=#{groupStatus},</if>
+        <if test="openid!=null">openid=#{openid}</if>
+        WHERE
+        group_id = #{groupId}
+    </update>
+
+
 
     <delete id="deleteByPK" parameterType="java.lang.Integer">
         DELETE FROM
