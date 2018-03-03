@@ -1,6 +1,5 @@
 package com.smallow.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.smallow.enums.BadmintonGroupCheckEnum;
@@ -10,7 +9,6 @@ import com.smallow.utils.serializer.Date2LongSerializer;
 import lombok.Data;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * Created by wanghuidong on 2017/8/21.
@@ -20,7 +18,7 @@ import java.util.Date;
 public class Group {
 
     /**
-     * 类目id.
+     * id.
      */
     private String groupId;
 
@@ -28,6 +26,50 @@ public class Group {
      * 群组名称
      */
     private String groupName;
+
+    /**
+     * 群组规模(成员数量)
+     */
+    private Integer groupScale;
+
+    /**
+     * 活动场馆
+     */
+    private String groupArena;
+    /**
+     * 活动场馆标识
+     */
+    private String groupArenaCode;
+
+    /**
+     * 所在城市
+     */
+    private String city;
+
+    /**
+     * 城市区划代码
+     */
+    private String cityCode;
+
+    /**
+     * 所在省份
+     */
+    private String province;
+
+    /**
+     * 所在省份区划代码
+     */
+    private String provinceCode;
+
+    /**
+     * 所在城市区域
+     */
+    private String area;
+
+    /**
+     * 所在城市区域代码
+     */
+    private String areaCode;
 
     /**
      * 群组图标
@@ -60,18 +102,16 @@ public class Group {
     private Integer groupCheck = BadmintonGroupCheckEnum.NEED.getCode();
 
 
-
     //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @JsonSerialize(using = Date2LongSerializer.class)
     private Timestamp createTime;
-
 
 
     //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @JsonSerialize(using = Date2LongSerializer.class)
     private Timestamp updateTime;
 
-    private Integer groupStatus= GroupStatusEnum.APPLY.getCode();
+    private Integer groupStatus = GroupStatusEnum.APPLY.getCode();
 
     private String openid;
 
@@ -79,9 +119,10 @@ public class Group {
     public BadmintonGroupCheckEnum getBacmintonGroupCheckEnum() {
         return EnumUtil.getByCode(groupCheck, BadmintonGroupCheckEnum.class);
     }
+
     @JsonIgnore
-    public GroupStatusEnum getGroupStatusEnum(){
-        return EnumUtil.getByCode(groupStatus,GroupStatusEnum.class);
+    public GroupStatusEnum getGroupStatusEnum() {
+        return EnumUtil.getByCode(groupStatus, GroupStatusEnum.class);
     }
 
 }

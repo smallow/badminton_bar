@@ -17,3 +17,6 @@ public class BadmintonBarApplication {
         WebSocket2.setApplicationContext(applicationContext);
     }
 }
+
+
+//@SpringBootApplication注解中已经包含了@ComponentScan和@EnableConfigurationProperties注解。

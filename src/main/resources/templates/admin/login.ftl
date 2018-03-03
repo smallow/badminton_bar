@@ -72,7 +72,6 @@
             },'json');
             i++;
         }
-
     }
 
     function createWebSocket() {

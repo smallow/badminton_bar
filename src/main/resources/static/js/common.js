@@ -24,29 +24,51 @@ function endAjax() {
     $("#mask").hide();
 }
 
-function genPagination(parentid,currentPage,pageSize,totalPage,totalElements) {
-    $("#"+parentid).html("");
-    var prePage=null;
-    if(currentPage<=1){
-        prePage=$("<li class='disabled'><a href='#'>上一页</a></li>");
-    }else{
-        prePage=$("<li><a href='javascript:void(0);' onclick=\"pagingImpl('"+(currentPage-1)+"','"+pageSize+"')\">上一页</a></li>");
-    }
-    $("#"+parentid).append(prePage);
-    for(var i=1;i<=totalPage;i++){
-        var li=null;
-        if(currentPage==i){
-            li=("<li class='disabled'><a href='#'>"+i+"</a></li>");
-        }else{
-            li=("<li><a href='javascript:void(0);' onclick=\"pagingImpl('"+i+"','"+pageSize+"')\">"+i+"</a></li>");
-        }
-        $("#"+parentid).append(li);
-    }
-    var nextPage=null;
-    if(currentPage>=totalPage){
-        nextPage=$("<li class='disabled'><a href='#'>下一页</a></li>");
-    }else{
-        nextPage=$("<li><a href='javascript:void(0);' onclick=\"pagingImpl('"+(currentPage+1)+"','"+pageSize+"')\">下一页</a></li>");
-    }
-    $("#"+parentid).append(nextPage);
-}
+
+
+
+/*function createTable(tableId,tableOptions,param,pageable) {
+ var table = $("#" + tableId);
+ var tableThead = $("<thead><tr></tr></thead>");
+ var thead=tableThead.children("tr");
+ var columns = tableOptions.columns;
+ if (columns) {
+ $.each(columns, function (index, val) {
+ var tr = $("<th>" + val.title + "</th>");
+ thead.append(tr);
+ });
+ }
+ table.append(tableThead);
+ table.append($("<tbody ></tbody>"));
+ var ajaxMessage = (tableOptions.ajaxMessage == undefined) ? "正在加载数据..." : tableOptions.ajaxMessage;
+ startAjax(ajaxMessage);
+ $.post(tableOptions.url, param, function (data) {
+ endAjax();
+ loadData(table,columns,data.data.content);
+ if(pageable){
+ genPagination("groupPagination", data.data.currentPage, data.data.pageSize, data.data.totalPage, data.data.totalElements);
+ }
+ }, 'json');
+ }
+
+ function loadData(table,columns,data) {
+ var tbody=table.children("tbody");
+ if (columns) {
+ $.each(data, function (index, val) {
+ var tr=$("<tr></tr>");
+ $.each(columns,function (index1, val1) {
+ var fieldValue=val[val1.field];
+ var tmp="";
+ if(val1.formatter){
+ tmp=val1.formatter(fieldValue,val,index);
+ }else{
+ tmp=(fieldValue==undefined)?"":fieldValue;
+ }
+ var td=$("<td align='"+val1.align+"'>"+tmp+"</td>");
+ tr.append(td);
+ });
+ tbody.append(tr);
+ });
+ }
+ }*/
+

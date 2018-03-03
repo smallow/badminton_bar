@@ -4,6 +4,15 @@
     <resultMap id="BaseResultMap" type="com.smallow.entity.Group">
         <id column="group_id" property="groupId" jdbcType="BIGINT"/>
         <result column="group_name" property="groupName" jdbcType="VARCHAR"/>
+        <result column="group_scale" property="groupScale" jdbcType="INTEGER"/>
+        <result column="group_arena" property="groupArena" jdbcType="VARCHAR"/>
+        <result column="group_arena_code" property="groupArenaCode" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="city_code" property="cityCode" jdbcType="VARCHAR"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+        <result column="province_code" property="provinceCode" jdbcType="VARCHAR"/>
+        <result column="area" property="area" jdbcType="VARCHAR"/>
+        <result column="area_code" property="areaCode" jdbcType="VARCHAR"/>
         <result column="group_icon" property="groupIcon" jdbcType="VARCHAR"/>
         <result column="group_memo" property="groupMemo" jdbcType="VARCHAR"/>
         <result column="group_manager_name" property="groupManagerName" jdbcType="VARCHAR"/>
@@ -17,7 +26,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        group_id, group_name, group_icon,group_memo, group_manager_name,
+        group_id, group_name,group_scale,group_arena,group_arena_code,city,city_code,province,province_code,area,area_code, group_icon,group_memo, group_manager_name,
         group_manager_id_number,group_manager_phone,group_status,openid,group_check,create_time,update_time
     </sql>
 
@@ -37,9 +46,9 @@
     <insert id="insert" parameterType="com.smallow.entity.Group">
         INSERT INTO
         badminton_group
-        (group_name,group_icon,group_memo,group_manager_name,group_manager_id_number,group_manager_phone,group_status,openid,group_check)
+        (group_name,group_scale,group_arena,group_arena_code,city,city_code,province,province_code,area,area_code,group_icon,group_memo,group_manager_name,group_manager_id_number,group_manager_phone,group_status,openid,group_check)
         VALUES
-        (#{groupName}, #{groupIcon}, #{groupMemo}, #{groupManagerName}, #{groupManagerIdNumber},
+        (#{groupName},#{groupScale},#{groupArena},#{groupArenaCode},#{city},#{cityCode},#{province},#{provinceCode},#{area},#{areaCode},#{groupIcon}, #{groupMemo}, #{groupManagerName}, #{groupManagerIdNumber},
         #{groupManagerPhone},#{groupStatus},#{openid},#{groupCheck})
     </insert>
 
@@ -48,6 +57,15 @@
         badminton_group
         SET
         <if test="groupName!=null">group_name=#{groupName},</if>
+        <if test="groupScale!=null">group_scale=#{groupScale},</if>
+        <if test="groupArena!=null">group_arena=#{groupArena},</if>
+        <if test="groupArenaCode!=null">group_arena_code=#{groupArenaCode},</if>
+        <if test="city!=null">city=#{city},</if>
+        <if test="cityCode!=null">city_code=#{cityCode},</if>
+        <if test="province!=null">province=#{province},</if>
+        <if test="provinceCode!=null">province_code=#{provinceCode},</if>
+        <if test="area!=null">area=#{area},</if>
+        <if test="areaCode!=null">area_code=#{areaCode},</if>
         <if test="groupIcon!=null">group_icon=#{groupIcon},</if>
         <if test="groupMemo!=null">group_memo=#{groupMemo},</if>
         <if test="groupManagerName!=null">group_manager_name=#{groupManagerName},</if>
@@ -76,6 +94,18 @@
             <if test="groupName!=null">
                 and group_name= #{groupName}
             </if>
+            <if test="provinceCode!=null">
+                and province_code= #{provinceCode}
+            </if>
+            <if test="cityCode!=null">
+                and city_code= #{cityCode}
+            </if>
+            <if test="areaCode!=null">
+                and area_code= #{areaCode}
+            </if>
+            <if test="groupArenaCode!=null">
+                and group_arena_code= #{groupArenaCode}
+            </if>
             <if test="groupManagerPhone!=null">
                 and group_manager_phone= #{groupManagerPhone}
             </if>
@@ -99,6 +129,18 @@
         <where>
             <if test="groupName!=null">
                 and group_name= #{groupName}
+            </if>
+            <if test="provinceCode!=null">
+                and province_code= #{provinceCode}
+            </if>
+            <if test="cityCode!=null">
+                and city_code= #{cityCode}
+            </if>
+            <if test="areaCode!=null">
+                and area_code= #{areaCode}
+            </if>
+            <if test="groupArenaCode!=null">
+                and group_arena_code= #{groupArenaCode}
             </if>
             <if test="groupManagerPhone!=null">
                 and group_manager_phone= #{groupManagerPhone}

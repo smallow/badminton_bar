@@ -27,6 +27,61 @@ public class GroupVo {
     @JsonProperty("groupName")
     private String groupName;
 
+
+    /**
+     * 群组规模(成员数量)
+     */
+    @JsonProperty("groupScale")
+    private Integer groupScale;
+
+    /**
+     * 活动场馆
+     */
+    @JsonProperty("groupArena")
+    private String groupArena;
+
+    /**
+     * 活动场馆标识
+     */
+    @JsonProperty("groupArenaCode")
+    private String groupArenaCode;
+
+    /**
+     * 所在城市
+     */
+    @JsonProperty("city")
+    private String city;
+
+    /**
+     * 城市区划代码
+     */
+    @JsonProperty("cityCode")
+    private String cityCode;
+
+    /**
+     * 所在省份
+     */
+    @JsonProperty("province")
+    private String province;
+
+    /**
+     * 所在省份区划代码
+     */
+    @JsonProperty("provinceCode")
+    private String provinceCode;
+
+    /**
+     * 所在城市区域
+     */
+    @JsonProperty("area")
+    private String area;
+
+    /**
+     * 所在城市区域代码
+     */
+    @JsonProperty("areaCode")
+    private String areaCode;
+
     /**
      * 群组图标
      */

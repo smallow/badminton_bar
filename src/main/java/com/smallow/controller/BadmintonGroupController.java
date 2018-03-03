@@ -2,11 +2,13 @@ package com.smallow.controller;
 
 import com.smallow.VO.GroupVo;
 import com.smallow.VO.ResultVO;
+import com.smallow.config.AdministrativeDivision;
 import com.smallow.converter.Group2GroupVoConverter;
 import com.smallow.entity.Group;
 import com.smallow.exception.BadmintonException;
 import com.smallow.form.GroupForm;
 import com.smallow.service.GroupService;
+import com.smallow.utils.JsonUtil;
 import com.smallow.utils.KeyUtil;
 import com.smallow.utils.ResultVOUtil;
 import com.smallow.wechat.utils.JsonUtils;
@@ -44,16 +46,21 @@ public class BadmintonGroupController {
     public ModelAndView list() {
         return new ModelAndView("admin/group/list");
     }
+
     @GetMapping("/add")
     public ModelAndView add(@RequestParam(value = "groupId", required = false) Integer groupId,
                             Map<String, Object> map) {
-        if(groupId!=null){
-            Group group=groupService.findOne(groupId);
-            map.put("group", JsonUtils.toJson(group));
-        }else{
+        if (groupId != null) {
+            Group group = groupService.findOne(groupId);
+            map.put("group", group);
+        } else {
             map.put("qr_code", KeyUtil.genUniqueKey());
         }
-        return new ModelAndView("admin/group/add",map);
+        map.put("province", AdministrativeDivision.getProvince());
+        map.put("city", JsonUtil.toJson(AdministrativeDivision.getCity()));
+        map.put("area", JsonUtil.toJson(AdministrativeDivision.getArea()));
+        map.put("arena", JsonUtil.toJson(AdministrativeDivision.getArena()));
+        return new ModelAndView("admin/group/add", map);
     }
 
     //    @GetMapping("/list")
@@ -82,23 +89,23 @@ public class BadmintonGroupController {
 //        map.put("pageSize", pageSize);
 //        return new ModelAndView("admin/group/list");
 //    }
-    @GetMapping("/list2")
-    @ResponseBody
-    public ResultVO<List<Group>> list2() {
-        Map<String, Object> param = new HashMap<>();
-        PageRequest pageRequest = new PageRequest(0, 10);
-        Page<Group> groupPage = groupService.findList(param, pageRequest);
-        return ResultVOUtil.success(groupPage.getContent());
-    }
+//    @GetMapping("/list2")
+//    @ResponseBody
+//    public ResultVO<List<Group>> list2() {
+//        Map<String, Object> param = new HashMap<>();
+//        PageRequest pageRequest = new PageRequest(0, 10);
+//        Page<Group> groupPage = groupService.findList(param, pageRequest);
+//        return ResultVOUtil.success(groupPage.getContent());
+//    }
 
     @PostMapping("/list")
     @ResponseBody
     public ResultVO list(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                               @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                               @RequestParam(value = "groupStatus", defaultValue = "0") Integer groupStatus,
-                               @RequestParam(value = "groupManagerPhone", defaultValue = "") String groupManagerPhone,
-                               @RequestParam(value = "groupName", defaultValue = "") String groupName,
-                               @RequestParam(value = "groupManagerName", defaultValue = "") String groupManagerName) {
+                         @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                         @RequestParam(value = "groupStatus", defaultValue = "0") Integer groupStatus,
+                         @RequestParam(value = "groupManagerPhone", defaultValue = "") String groupManagerPhone,
+                         @RequestParam(value = "groupName", defaultValue = "") String groupName,
+                         @RequestParam(value = "groupManagerName", defaultValue = "") String groupManagerName) {
         Map<String, Object> param = new HashMap<>();
         PageRequest pageRequest = new PageRequest(page - 1, pageSize);
         if (!StringUtils.isEmpty(groupStatus)) {
@@ -113,18 +120,18 @@ public class BadmintonGroupController {
         Page<Group> groupPage = groupService.findList(param, pageRequest);
         List<GroupVo> groupVoList = new ArrayList<>();
         groupVoList = Group2GroupVoConverter.convert(groupPage.getContent());
-        Map<String,Object> returnData=new HashMap<>();
-        returnData.put("content",groupVoList);
-        returnData.put("currentPage",page);
-        returnData.put("pageSize",pageSize);
-        returnData.put("totalPage",groupPage.getTotalPages());
-        returnData.put("totalElements",groupPage.getTotalElements());
+        Map<String, Object> returnData = new HashMap<>();
+        returnData.put("content", groupVoList);
+        returnData.put("currentPage", page);
+        returnData.put("pageSize", pageSize);
+        returnData.put("totalPage", groupPage.getTotalPages());
+        returnData.put("totalElements", groupPage.getTotalElements());
         return ResultVOUtil.success(returnData);
     }
 
     @PostMapping("/save")
     public ModelAndView save(@Valid GroupForm form,
-                         BindingResult bindingResult,
+                             BindingResult bindingResult,
                              Map<String, Object> map) {
         if (bindingResult.hasErrors()) {
             map.put("msg", bindingResult.getFieldError().getDefaultMessage());
@@ -132,17 +139,17 @@ public class BadmintonGroupController {
             return new ModelAndView("common/error", map);
         }
 
-        Group group=new Group();
-        try{
-            if(form.getGroupId()!=null){
-                group=groupService.findOne(form.getGroupId());
+        Group group = new Group();
+        try {
+            if (form.getGroupId() != null) {
+                group = groupService.findOne(form.getGroupId());
             }
             BeanUtils.copyProperties(form, group);
-            if(group.getOpenid()==null){
+            if (group.getOpenid() == null) {
                 group.setOpenid("");
             }
             groupService.save(group);
-        }catch (BadmintonException e){
+        } catch (BadmintonException e) {
             map.put("msg", e.getMessage());
             map.put("url", "/badminton/admin/group/list");
             return new ModelAndView("common/error", map);

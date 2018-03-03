@@ -1,0 +1,14 @@
+package com.smallow.service;
+
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by wanghuidong on 2018/3/2.
+ */
+public interface ConstantService {
+
+    Map<String, List<Map<String,Object>>> findConstant();
+
+}

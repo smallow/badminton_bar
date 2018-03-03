@@ -17,6 +17,32 @@ public class GroupForm {
     private String groupManagerIdNumber;
     @NotEmpty(message = "群名称必填")
     private String groupName;
+    @NotEmpty(message = "群组规模必填")
+    private String groupScale;
+    @NotEmpty(message = "活动场馆必填")
+    private String groupArenaCode;
+    @NotEmpty(message = "活动场馆必填")
+    private String groupArena;
+
+
+    @NotEmpty(message = "省份必填")
+    private String province;
+    @NotEmpty(message = "省份必填")
+    private String provinceCode;
+
+    @NotEmpty(message = "城市必填")
+    private String city;
+    @NotEmpty(message = "城市必填")
+    private String cityCode;
+
+
+    @NotEmpty(message = "区域必填")
+    private String area;
+    @NotEmpty(message = "区域必填")
+    private String areaCode;
+
+
+
     private String groupIcon;
     private Integer groupCheck;
     private String openid;
