@@ -19,19 +19,7 @@ public class ConstantServiceImpl implements ConstantService {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public Map<String, List<Map<String, Object>>> findConstant() {
-        Map<String, List<Map<String, Object>>> map = new HashMap<>();
-        List<Map<String, Object>> province = jdbcTemplate.queryForList("SELECT * from bd_province order by create_time desc");
-        map.put("province", province);
-
-        List<Map<String, Object>> city = jdbcTemplate.queryForList("SELECT * from bd_city order by create_time desc");
-        map.put("city", city);
-
-        List<Map<String, Object>> area = jdbcTemplate.queryForList("SELECT * from bd_area order by create_time desc");
-        map.put("area", area);
-
-        List<Map<String, Object>> arena = jdbcTemplate.queryForList("SELECT * from bd_arena order by create_time desc");
-        map.put("arena", arena);
-        return map;
+    public List<Map<String, Object>> findAreaConstants() {
+        return jdbcTemplate.queryForList("SELECT * from bd_area order by create_time desc");
     }
 }

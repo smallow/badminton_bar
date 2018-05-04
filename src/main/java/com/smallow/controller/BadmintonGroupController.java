@@ -2,17 +2,14 @@ package com.smallow.controller;
 
 import com.smallow.VO.GroupVo;
 import com.smallow.VO.ResultVO;
-import com.smallow.config.AdministrativeDivision;
 import com.smallow.converter.Group2GroupVoConverter;
 import com.smallow.entity.Group;
 import com.smallow.exception.BadmintonException;
 import com.smallow.form.GroupForm;
 import com.smallow.service.GroupService;
-import com.smallow.utils.JsonUtil;
+import com.smallow.utils.CommonUtil;
 import com.smallow.utils.KeyUtil;
 import com.smallow.utils.ResultVOUtil;
-import com.smallow.wechat.utils.JsonUtils;
-import freemarker.template.utility.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,12 +53,43 @@ public class BadmintonGroupController {
         } else {
             map.put("qr_code", KeyUtil.genUniqueKey());
         }
-        map.put("province", AdministrativeDivision.getProvince());
-        map.put("city", JsonUtil.toJson(AdministrativeDivision.getCity()));
-        map.put("area", JsonUtil.toJson(AdministrativeDivision.getArea()));
-        map.put("arena", JsonUtil.toJson(AdministrativeDivision.getArena()));
+//        map.put("province", AdministrativeDivision.getProvince());
+//        map.put("city", JsonUtil.toJson(AdministrativeDivision.getCity()));
+//        map.put("area", JsonUtil.toJson(AdministrativeDivision.getArea()));
+//        map.put("arena", JsonUtil.toJson(AdministrativeDivision.getArena()));
+//        List<Map<String, Object>> list = new ArrayList<>();
+//        List<Map<String, Object>> provinces = AdministrativeDivision.getProvince();
+//        for (Map<String, Object> province : provinces) {
+//            province.put("children", findListByPCode((String) province.get("code"), 1));
+//            list.add(province);
+//        }
+//        map.put("list",JsonUtil.toJson(list));
         return new ModelAndView("admin/group/add", map);
     }
+
+//    private List<Map<String, Object>> findListByPCode(String pCode, Integer level) {
+//        List<Map<String, Object>> list = new ArrayList<>();
+//        List<Map<String, Object>> total = null;
+//        switch (level) {
+//            case 1:
+//                total = AdministrativeDivision.getCity();
+//                break;
+//            case 2:
+//                total = AdministrativeDivision.getArea();
+//                break;
+//            case 3:
+//                total = AdministrativeDivision.getArena();
+//                break;
+//        }
+//        for (Map<String, Object> map : total) {
+//            String parent = (String) map.get("parent");
+//            if (pCode.equals(parent)) {
+//                map.put("children",findListByPCode((String) map.get("code"),level+1));
+//                list.add(map);
+//            }
+//        }
+//        return list;
+//    }
 
     //    @GetMapping("/list")
 //    public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
@@ -135,7 +163,7 @@ public class BadmintonGroupController {
                              Map<String, Object> map) {
         if (bindingResult.hasErrors()) {
             map.put("msg", bindingResult.getFieldError().getDefaultMessage());
-            map.put("url", "/badminton/admin/group/list");
+            map.put("url", CommonUtil.getContextPath()+"/admin/group/list");
             return new ModelAndView("common/error", map);
         }
 
@@ -151,10 +179,10 @@ public class BadmintonGroupController {
             groupService.save(group);
         } catch (BadmintonException e) {
             map.put("msg", e.getMessage());
-            map.put("url", "/badminton/admin/group/list");
+            map.put("url", CommonUtil.getContextPath()+"/admin/group/list");
             return new ModelAndView("common/error", map);
         }
-        map.put("url", "/badminton/admin/group/list");
+        map.put("url",  CommonUtil.getContextPath()+"/admin/group/list");
         return new ModelAndView("common/success", map);
 
     }

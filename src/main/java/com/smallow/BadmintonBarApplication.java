@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
-@MapperScan(basePackages = "com.smallow.mapper")
+@MapperScan({"com.smallow.mapper","com.smallow.workflow.example.qingjia","com.smallow.workflow.mapper"})
 public class BadmintonBarApplication {
 
     public static void main(String[] args) {

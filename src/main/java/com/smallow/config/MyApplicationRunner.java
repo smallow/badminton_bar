@@ -20,21 +20,16 @@ import java.util.Map;
 @Slf4j
 @Order(value = 1)
 public class MyApplicationRunner implements ApplicationRunner {
-
-
     @Autowired
     private ConstantService constantService;
 
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
         log.info("【开始加载代码表数据...】");
-        Map<String, List<Map<String, Object>>> map = constantService.findConstant();
-        if (map != null && map.size() > 0) {
-            AdministrativeDivision.setProvince(map.get("province"));
-            AdministrativeDivision.setArea(map.get("area"));
-            AdministrativeDivision.setCity(map.get("city"));
-            AdministrativeDivision.setArena(map.get("arena"));
-            log.info("【加载省份数据成功】");
+        List<Map<String, Object>> list = constantService.findAreaConstants();
+        if (list != null && list.size() > 0) {
+            AdministrativeDivision.setArea(list);
+            log.info("【加载行政区划代码表数据成功】");
         }
 
 

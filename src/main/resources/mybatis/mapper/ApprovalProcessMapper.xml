@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smallow.workflow.mapper.ApprovalMapper">
+
+    <resultMap id="baseResultMap" type="com.smallow.workflow.entity.ApprovalProcess">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="business_code" property="businessCode" jdbcType="VARCHAR"/>
+        <result column="business_name" property="businessName" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="memo" property="memo" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,business_name,business_code,user_id,status,memo,create_time,update_time
+    </sql>
+
+    <select id="findOne" parameterType="java.lang.Integer" resultMap="baseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM wk_approval_process
+        WHERE id = #{id}
+    </select>
+
+    <select id="findByBusinessCode" parameterType="java.lang.String" resultMap="baseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM wk_approval_process
+        WHERE business_code = #{businessCode}
+    </select>
+
+
+</mapper>

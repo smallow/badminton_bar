@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
 <#include "../../common/header.ftl">
-<link rel="stylesheet" type="text/css" href="/badminton/css/badminton.css"/>
-<link rel="stylesheet" type="text/css" href="/badminton/css/mask.css"/>
+<link rel="stylesheet" type="text/css" href="${request.contextPath}/css/badminton.css"/>
+<link rel="stylesheet" type="text/css" href="${request.contextPath}/css/mask.css"/>
 <body>
 <div class="container-fluid" id="publicTpl">
     <div class="row clearfix ">
@@ -78,7 +78,7 @@
                 </tbody>
             </table>-->
             <div class="col-md-12 column">
-                <a href="/badminton/admin/group/add" data-toggle="modal" data-target="#myModal"
+                <a href="${request.contextPath}/admin/group/add" data-toggle="modal" data-target="#myModal"
                    class="btn  btn-warning pull-left" style="margin:20px 0;display: inline-block;">新建群组</a>
                 <ul class="pagination pull-right" id="groupPagination">
                 </ul>
@@ -95,12 +95,15 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="/badminton/js/common.js"></script>
-<script type="text/javascript" src="/badminton/js/groupManage.js"></script>
-<script type="text/javascript" src="/badminton/js/sui.js"></script>
+<script type="text/javascript" src="${request.contextPath}/js/common.js"></script>
+<script type="text/javascript" src="${request.contextPath}/js/groupManage.js"></script>
+<script type="text/javascript" src="${request.contextPath}/js/sui.js"></script>
+<script type="text/javascript" src="${request.contextPath}/js/sui-cascade.js"></script>
 <script>
     var table1 = null;
+    var _context="";
     $(function () {
+        _context='${request.contextPath}';
         $("#myModal").on("hidden.bs.modal", function () {
             $(this).removeData("bs.modal");
             if(webSocket){
@@ -113,6 +116,34 @@
     });
 
     function groupGridInit() {
+        var obj = {
+            url: _context+"/admin/group/list",
+            columns: [
+                {field: "groupName", title: "群组名称", width: "", height: "", align: "left"},
+                {field: "province", title: "省份", width: "", height: "", align: "left"},
+                {field: "city", title: "城市", width: "", height: "", align: "left"},
+                {field: "area", title: "地区", width: "", height: "", align: "left"},
+                {field: "groupScale", title: "规模(人)", width: "", height: "", align: "left"},
+
+                {field: "groupManagerName", title: "群管理员名称", width: "", height: "", align: "left"},
+                {field: "groupManagerIdNumber", title: "管理员证件号码", width: "", height: "", align: "left"},
+                {field: "groupManagerPhone", title: "管理员手机号", width: "", height: "", align: "left"},
+                {field: "groupStatus", title: "状态", width: "", height: "", align: "left"},
+                {field: "createTime", title: "创建时间", width: "", height: "", align: "left"},
+                {
+                    field: "operation",
+                    title: "操作",
+                    width: "",
+                    height: "",
+                    align: "left",
+                    formatter: function (value, row, index) {
+                        return "<a href='javascript:void(0);' onclick=\"modify('" + row.groupId + "')\">修改</a>&nbsp;|&nbsp;"
+                                + "<a href='javascript:void(0);' onclick=\"del('" + row.groupId + "')\">删除</a>";
+                    }
+                }
+            ],
+            pageable:true
+        };
         table1 = new DataGrid('group', obj.columns, obj.url,obj.pageable);
         table1.datagrid();
     }
@@ -145,7 +176,7 @@
 
     function modify(groupId) {
         $("#myModal").modal({
-            remote: "/badminton/admin/group/add?groupId=" + groupId
+            remote: "${request.contextPath}/admin/group/add?groupId=" + groupId
         });
     }
 

@@ -18,9 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,10 +56,48 @@ public class BadmintonAdminUserController {
     private WxMpService wxMpService;
 
 
-
     @GetMapping("/login")
     public ModelAndView login() {
         return new ModelAndView("admin/login");
+    }
+
+    @GetMapping("/realCertify")
+    public ModelAndView realCertify(@RequestParam("customerId") String customerId,
+                                    @RequestParam("merchantCode") String merchantCode,
+                                    @RequestParam("notifyUrl") String notifyUrl,
+                                    @RequestParam("backUrl") String backUrl,
+                                    Map<String, Object> map
+    ) {
+        map.put("customerId", customerId);
+        map.put("notifyUrl", notifyUrl);
+        map.put("backUrl", backUrl);
+        return new ModelAndView("admin/realCertify");
+    }
+
+    @PostMapping("/getWxData")
+    @ResponseBody
+    public Map<String, Object> getWxData(@RequestParam("notifyUrl") String notifyUrl,
+                                         @RequestParam("customerId") String customerId) {
+        Map<String, Object> map = new HashMap<>();
+
+        RestTemplate client = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        //请勿轻易改变此提交方式，大部分的情况下，提交方式都是表单提交
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        //封装参数，千万不要替换为Map与HashMap，否则参数无法传递
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        //也支持中文
+        params.add("customerId", customerId);
+        params.add("name", "王会东");
+        params.add("frontpic", "frontpic-------12121212ddd");
+        params.add("backpic", "backpic*********sddsdd");
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
+        //执行HTTP请求
+        ResponseEntity<String> response = client.exchange(notifyUrl, HttpMethod.POST, requestEntity, String.class);
+        //输出结果
+        System.out.println(response.getBody());
+        map.put("success", true);
+        return map;
     }
 
     @PostMapping("/getQrCode")
@@ -104,10 +146,10 @@ public class BadmintonAdminUserController {
                 return new ModelAndView("common/error");
             }
 
-            Map<String,Object> param=new HashMap<>();
-            PageRequest pageRequest=new PageRequest(0,10);
-            param.put("openid",openid);
-            Page page = groupService.findList(param,pageRequest);
+            Map<String, Object> param = new HashMap<>();
+            PageRequest pageRequest = new PageRequest(0, 10);
+            param.put("openid", openid);
+            Page page = groupService.findList(param, pageRequest);
             List<Group> list = page.getContent();
             if (list == null || list.isEmpty()) {
                 map.put("msg", ResultEnum.ADMIN_EMPTY.getMessage());
@@ -131,7 +173,6 @@ public class BadmintonAdminUserController {
         map.put("url", "/badminton/admin/group/list");
         return new ModelAndView("common/error");
     }
-
 
 
 }

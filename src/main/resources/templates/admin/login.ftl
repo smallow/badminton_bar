@@ -1,9 +1,7 @@
 <html>
 <#include "../common/header.ftl">
-<link rel="stylesheet" href="/badminton/css/badminton.css">
-<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="/badminton/js/common.js"></script>
+<link rel="stylesheet" href="${request.contextPath}/css/badminton.css">
+<script src="${request.contextPath}/js/common.js"></script>
 <body>
 <style>
     .successLoginMsg{
@@ -56,9 +54,9 @@
     }
     function getQrCode() {
         if(i<10){
-            $.post("/badminton/admin/getQrCode",{},function (data) {
+            $.post("${request.contextPath}/admin/getQrCode",{},function (data) {
                 if(data.qr_code && data.qr_code!=""){
-                    $("#qr_code").attr("src","/badminton/admin/getQrCodePic/"+data.qr_code+"");
+                    $("#qr_code").attr("src","${request.contextPath}/admin/getQrCodePic/"+data.qr_code+"");
                     setTimeout(function () {
                         $("#loginMsg").html("请使用群管理员绑定微信号扫描登录");
                         $(".loading").hide();
@@ -76,7 +74,7 @@
 
     function createWebSocket() {
         if ('WebSocket' in window) {
-            webSocket = new WebSocket('ws://smallow.top/badminton/webSocket');
+            webSocket = new WebSocket('ws://smallow.top${request.contextPath}/webSocket');
         } else {
             alert('该浏览器不支持websocket!');
         }
@@ -115,7 +113,7 @@
 
     function goLogin(scene_str) {
         //alert(scene_str);
-        httpFormPost("/badminton/admin/login", {scene_str: scene_str});
+        httpFormPost("${request.contextPath}/admin/login", {scene_str: scene_str});
     }
 </script>
 

@@ -9,6 +9,9 @@ import java.util.Map;
  */
 public interface ConstantService {
 
-    Map<String, List<Map<String,Object>>> findConstant();
-
+    /**
+     * 查找行政区划代码表
+     * @return
+     */
+    List<Map<String, Object>> findAreaConstants();
 }

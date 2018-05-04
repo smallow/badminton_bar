@@ -1,6 +1,6 @@
 server:
-  port: 8080
-  context-path: /badminton
+  port: 8081
+  context-path: /bd
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
@@ -15,6 +15,8 @@ spring:
     password: Zxy@19860122
   jackson:
         default-property-inclusion: non_null
+  freemarker:
+    request-context-attribute: request
 wechat:
   mp:
     appId: wx557951c1f38f290c

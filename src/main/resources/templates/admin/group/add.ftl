@@ -3,7 +3,7 @@
     <h4 class="modal-title">新建群组</h4>
 </div>
 <div class="modal-body" style="">
-    <form class="form-horizontal" action="/badminton/admin/group/save" id="add_group_form" method="post">
+    <form class="form-horizontal" action="${request.contextPath}/admin/group/save" id="add_group_form" method="post">
         <div class="form-group">
             <label for="site_num" class="col-sm-4 control-label">申请人名称</label>
             <div class="col-sm-8">
@@ -36,44 +36,8 @@
         </div>
         <div class="form-group">
             <label for="site_num" class="col-sm-4 control-label">活动场馆</label>
-            <div class="col-sm-8">
-                    <div class="row clearfix">
-                        <div class="col-md-6 column">
-                            <select id="provinceCode" name="provinceCode" onchange="provinceChange()">
-                                <option>省份</option>
-                                <#if group??>
-                                    <#list province as item>
-                                        <#if group.provinceCode==item.code>
-                                            <option value="${item.code}" selected>${item.name}</option>
-                                        <#else>
-                                            <option value="${item.code}">${item.name}</option>
-                                        </#if>
-                                    </#list>
-                                <#else>
-                                    <#list province as item>
-                                            <option value="${item.code}">${item.name}</option>
-                                    </#list>
-                                </#if>
-                            </select>
-                        </div>
-                        <div class="col-md-6 column">
-                            <select id="cityCode" name="cityCode">
-                                <option>城市</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row clearfix" style="margin-top: 10px;">
-                        <div class="col-md-6 column">
-                            <select id="areaCode" name="areaCode">
-                                <option>区域</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 column">
-                            <select id="groupArenaCode" name="groupArenaCode">
-                                <option>球馆</option>
-                            </select>
-                        </div>
-                    </div>
+            <div class="col-sm-8" id="cascade_area">
+
             </div>
         </div>
         <div class="form-group">
@@ -90,7 +54,7 @@
             <div class="form-group">
                 <label for="site_num" class="col-sm-4 control-label">申请人扫码确认</label>
                 <div class="col-sm-8">
-                    <img src="/badminton/admin/getQrCodePic/groupReg_${qr_code}" width="100" height="100" border="0" />
+                    <img src="${request.contextPath}/admin/getQrCodePic/groupReg_${qr_code}" width="100" height="100" border="0" />
                     <span id="scanResultMsg" style="color: #00CD00;"></span>
                 </div>
             </div>
@@ -108,6 +72,7 @@
     </form>
     <input type="hidden" id="groupCityCode" value="${(group.cityCode)!''}"/>
     <input type="hidden" id="groupAreaCode" value="${(group.areaCode)!''}"/>
+    <input type="hidden" id="groupArenaCode" value="${(group.groupArenaCode)!''}"/>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default poll-left" data-dismiss="modal">取消</button>
@@ -117,9 +82,7 @@
     var webSocket=null;
     var scanFlag=null;
     var qr_code='';
-    var city=[];
-    var area=[];
-    var arena=[];
+   // var list=[];
     $(function () {
         if(qr_code!=""){
             createWebSocket(function () {
@@ -130,52 +93,25 @@
                 },300*1000);
             });
         }
-         city=${city!''};
-         area=${area!''};
-         arena=${arena!''};
+        //list=${list!''};
+//        var cascade=new Cascade(list);
+//        var provinceCheckList=cascade.cascade();
+//        $("#cascade_area").append(provinceCheckList);
+        $("#cascade_area").loadSelect({url:"${request.contextPath}/common/findAreaByPCode",pcode:"999"});
     });
 
-    function provinceChange() {
-        $("#cityCode").html("");
-        var provinceCode=$("#provinceCode").val();
-        var tmp=city;
-        var tmp2=$("#groupCityCode").val();
-        if(provinceCode=="110000" || provinceCode=="120000" || provinceCode=="310000" ||provinceCode=="500000"){
-            tmp=area;
-            tmp2=$("#groupAreaCode").val();
-        }
 
-        $.each(tmp,function(index,val){
-            if(val.parent==provinceCode){
-                var option=$("<option value='"+val.code+"'>"+val.name+"</option>");
-                if(tmp2==val.code){
-                    option=$("<option value='"+val.code+"' selected>"+val.name+"</option>");
-                }
-                $("#cityCode").append(option);
-            }
-        })
-    }
 
-    function display(group) {
-        $("#group_id").val(group.groupId);
-        $("#group_manager_name").val(group.groupManagerName);
-        $("#group_manager_phone").val(group.groupManagerPhone);
-        $("#group_manager_id_number").val(group.groupManagerIdNumber);
 
-        $("#group_name").val(group.groupName);
-        $.each($("input[name=groupCheck]"),function (index, obj) {
-           if(group.groupCheck==$(this).val()){
-               $(this).attr("checked","checked");
-           }
-        });
-    }
+
+
     function save() {
         $("#add_group_form").submit();
     }
 
     function createWebSocket(callback) {
         if ('WebSocket' in window) {
-            webSocket = new WebSocket('ws://smallow.top/badminton/webSocket2/groupReg/'+qr_code);
+            webSocket = new WebSocket('ws://smallow.top${request.contextPath}/webSocket2/groupReg/'+qr_code);
         } else {
             alert('该浏览器不支持websocket!');
         }
