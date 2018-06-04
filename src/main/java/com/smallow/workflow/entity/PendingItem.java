@@ -1,4 +1,4 @@
-package com.smallow.workflow.pendingitem;
+package com.smallow.workflow.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -35,20 +35,6 @@ public class PendingItem {
      * 业务类型代码
      */
     private String businessCode;
-    /**
-     * 业务类型名称
-     */
-    private String businessName;
-
-    /**
-     * 流程ID
-     */
-    private Integer approvalProcessId;
-
-    /**
-     * 流程步骤ID
-     */
-    private Integer approvalProcessStepId;
 
     /**
      * 待办所属人ID
@@ -56,14 +42,31 @@ public class PendingItem {
     private Integer userId;
 
     /**
-     * 待办处理状态 0通过 1不通过
+     * 待办处理状态 0待处理 1已处理
      */
-    private Integer status = PendingItemStatusEnum.PASSED.getCode();
+    private Integer status = PendingItemStatusEnum.PENDING.getCode();
 
     /**
-     * 备注信息
+     * 待办提交人ID
      */
-    private String memo;
+    private Integer sendUserId;
+
+    /**
+     * 待办提交时间
+     */
+    @JsonSerialize(using = Date2LongSerializer.class)
+    private Timestamp sendTime;
+
+
+    /**
+     * 流程ID
+     */
+    private Integer approvalProcessId;
+
+    /**
+     * 步骤ID
+     */
+    private Integer approvalProcessStepId;
 
 
     @JsonIgnore

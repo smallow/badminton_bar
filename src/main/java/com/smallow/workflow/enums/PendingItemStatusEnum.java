@@ -7,9 +7,8 @@ import lombok.Getter;
  */
 @Getter
 public enum PendingItemStatusEnum implements IntegerCodeEnum {
-    PASSED(0, "通过"),
-
-    REJECT(1, "拒绝");
+    PENDING(0, "待处理"),
+    FINISHED(1, "已处理");
 
     private Integer code;
     private String name;

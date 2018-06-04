@@ -1,34 +1,74 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.smallow.workflow.mapper.PendingItemMapper">
-    <resultMap id="baseResultMap" type="com.smallow.workflow.pendingitem.PendingItem">
-        <id column="id" property="id" jdbcType="INTEGER"/>
+
+    <resultMap id="baseResultMap" type="com.smallow.workflow.entity.PendingItem">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
         <result column="work_id" property="workId" jdbcType="INTEGER"/>
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="business_code" property="businessCode" jdbcType="VARCHAR"/>
-        <result column="business_name" property="businessName" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="send_user_id" property="sendUserId" jdbcType="INTEGER"/>
+        <result column="send_time" property="sendTime" jdbcType="TIMESTAMP"/>
         <result column="approval_process_id" property="approvalProcessId" jdbcType="INTEGER"/>
         <result column="approval_process_step_id" property="approvalProcessStepId" jdbcType="INTEGER"/>
-        <result column="user_id" property="userId" jdbcType="INTEGER"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,work_id,title,business_code,business_name,approval_process_id,approval_process_step_id,user_id,create_time,update_time
+      id,work_id,title,business_code,user_id,status,send_user_id,send_time,approval_process_id,approval_process_step_id,create_time,update_time
     </sql>
 
-    <insert id="save" parameterType="com.smallow.workflow.pendingitem.PendingItem">
-        INSERT INTO
-        wk_pending_item
-        (id,work_id,title,business_code,business_name,approval_process_id,approval_process_step_id,user_id,status,memo)
-        VALUES
-        (#{id},#{workId},#{title},#{businessCode},#{businessName},#{approvalProcessId},#{approvalProcessStepId},#{userId},#{status},#{memo})
+    <insert id="save" parameterType="com.smallow.workflow.entity.PendingItem">
+      INSERT INTO wk_pending_item(id,work_id,title,business_code,user_id,status,send_user_id,send_time,approval_process_id,approval_process_step_id)
+      VALUES (#{id},#{workId},#{title},#{businessCode},#{userId},#{status},#{sendUserId},#{sendTime},#{approvalProcessId},#{approvalProcessStepId})
     </insert>
 
-    <select id="findByWorkId" parameterType="java.lang.Integer" resultMap="baseResultMap">
+
+    <select id="count" resultType="long" parameterType="java.util.Map">
+        select count(id) from wk_pending_item
+        <where>
+            <if test="workId!=null">
+                and work_id= #{workId}
+            </if>
+            <if test="businessCode!=null">
+                and business_code= #{businessCode}
+            </if>
+            <if test="userId!=null">
+                and user_id= #{userId}
+            </if>
+            <if test="approvalProcessId!=null">
+                and approval_process_id= #{approvalProcessId}
+            </if>
+            <if test="status!=null">
+                and status= #{status}
+            </if>
+        </where>
+    </select>
+    <select id="findList" parameterType="java.util.Map" resultMap="baseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        from wk_pending_item where work_id=#{workId}
+        from wk_pending_item
+        <where>
+            <if test="workId!=null">
+                and work_id= #{workId}
+            </if>
+            <if test="businessCode!=null">
+                and business_code= #{businessCode}
+            </if>
+            <if test="userId!=null">
+                and user_id= #{userId}
+            </if>
+            <if test="approvalProcessId!=null">
+                and approval_process_id= #{approvalProcessId}
+            </if>
+            <if test="status!=null">
+                and status= #{status}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+        limit #{offset},#{pageSize}
     </select>
 </mapper>

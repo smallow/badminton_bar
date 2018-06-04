@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smallow.workflow.mapper.WorkFLowMapper">
+
+    <resultMap id="baseResultMap" type="com.smallow.workflow.entity.WorkFlow">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="work_id" property="workId" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="deal_type" property="dealType" jdbcType="INTEGER"/>
+        <result column="deal_remark" property="dealRemark" jdbcType="VARCHAR"/>
+        <result column="deal_time" property="dealTime" jdbcType="TIMESTAMP"/>
+        <result column="approval_process_id" property="approvalProcessId" jdbcType="INTEGER"/>
+        <result column="approval_process_step_id" property="approvalProcessStepId" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      id,work_id,user_id,deal_type,deal_remark,deal_time,approval_process_id,approval_process_step_id,create_time,update_time
+    </sql>
+
+
+    <insert id="save" parameterType="com.smallow.workflow.entity.WorkFlow">
+        INSERT INTO wk_work_flow_history(id,work_id,user_id,deal_type,deal_remark,deal_time,approval_process_id,approval_process_step_id)
+        VALUES (#{id},#{workId},#{userId},#{dealType},#{dealRemark},#{dealTime},#{approvalProcessId},#{approvalProcessStepId})
+    </insert>
+</mapper>

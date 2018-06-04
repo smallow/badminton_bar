@@ -1,6 +1,7 @@
 package com.smallow.workflow.service;
 
 import com.smallow.workflow.dto.ApprovalProcessDto;
+import com.smallow.workflow.entity.ApprovalProcess;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -19,4 +20,6 @@ public interface ApprovalService {
      * 查询业务代码查询相关流程
      */
     ApprovalProcessDto findByBusinessCode(String businessCode);
+
+    //ApprovalProces
 }
